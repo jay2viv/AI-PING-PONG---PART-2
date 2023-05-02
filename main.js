@@ -22,7 +22,9 @@ var ball = {
 }
 
 function setup() {
-  var canvas = createCanvas(700, 600);
+  canvas = createCanvas(700, 600);
+  canvas.CENTER();
+  video.hide();
 }
 
 
