@@ -1,5 +1,5 @@
 
-/*created by prashant shukla */
+
 
 var paddle2 = 10, paddle1 = 10;
 
@@ -12,7 +12,7 @@ var paddle1Y;
 var playerscore = 0;
 var audio1;
 var pcscore = 0;
-//ball x and y and speedx speed y and radius
+// ball x and y and speedx speed y and radius
 var ball = {
   x: 350 / 2,
   y: 480 / 2,
@@ -23,13 +23,23 @@ var ball = {
 
 function setup() {
   canvas = createCanvas(700, 600);
-  canvas.CENTER();
-  video.hide();
+  canvas.center();
+  canvas.parent("canvas")
+  v = createCapture(VIDEO);
+  v.hide();
+  v.size(700, 600);
+  poseNet = ml5.poseNet(v, modalLoaded); 
+}
+
+function modalLoaded()
+{
+  console.log("modal got LOaded yeyeyyeyeyeyeyeyey")
 }
 
 
 function draw() {
 
+  image(v, 0, 0, 700, 600)
   background(0);
 
   fill("black");
