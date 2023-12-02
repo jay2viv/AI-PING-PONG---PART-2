@@ -1,4 +1,6 @@
-
+right_wristX = "";
+right_wristY = "";
+right_wrist = "";
 
 
 var paddle2 = 10, paddle1 = 10;
@@ -20,6 +22,12 @@ var ball = {
   dx: 3,
   dy: 3
 }
+game_status = "";
+
+function preload()
+{
+  ball_touch_paddle.wav
+}
 
 function setup() {
   canvas = createCanvas(700, 600);
@@ -28,16 +36,40 @@ function setup() {
   v = createCapture(VIDEO);
   v.hide();
   v.size(700, 600);
-  poseNet = ml5.poseNet(v, modalLoaded); 
+  poseNet = ml5.poseNet(v, modalLoaded);
+  poseNet.on("pose", gotResults);
 }
 
-function modalLoaded()
+function gotResults(results)
 {
-  console.log("modal got LOaded yeyeyyeyeyeyeyeyey")
+  if (length.results > 0) 
+  {
+    right_wristX = results[0].pose.nose.x;
+    right_wristY = results[0].pose.nose.x;
+  }
+}
+
+function modalLoaded() {
+  console.log("modal got Loaded yeyeyyeyeyeyeyeyey");
 }
 
 
-function draw() {
+
+
+function draw() 
+{
+
+  if (right_wrist > 0.2) 
+  {
+    fill(0, 255, 251);
+    stroke(0, 255, 68);
+    circle(right_wristX, right_wristY, 30)  
+  }
+
+  if (game_status == "start") 
+  {
+    
+  }
 
   image(v, 0, 0, 700, 600)
   background(0);
@@ -79,11 +111,15 @@ function draw() {
   move();
 }
 
+function startgame()
+{
+  game_status = "start";
+  document.getElementById("status").innerHTML = "game is loaded";
+}
 
 
 //function reset when ball does notcame in the contact of padde
-function reset() 
-{
+function reset() {
   ball.x = width / 2 + 100,
     ball.y = height / 2 + 100;
   ball.dx = 3;
@@ -93,8 +129,7 @@ function reset()
 
 
 //function midline draw a line in center
-function midline() 
-{
+function midline() {
   for (i = 0; i < 480; i += 10) {
     var y = 0;
     fill("white");
@@ -105,8 +140,7 @@ function midline()
 
 
 //function drawScore show scores
-function drawScore() 
-{
+function drawScore() {
   textAlign(CENTER);
   textSize(20);
   fill("white");
@@ -119,8 +153,7 @@ function drawScore()
 
 
 //very important function of this game
-function move() 
-{
+function move() {
   fill(50, 350, 0);
   stroke(255, 0, 0);
   strokeWeight(0.5);
@@ -171,8 +204,7 @@ function models() {
 
 
 //this function help to not go te paddle out of canvas
-function paddleInCanvas() 
-{
+function paddleInCanvas() {
   if (mouseY + paddle1Height > height) {
     mouseY = height - paddle1Height;
   }
